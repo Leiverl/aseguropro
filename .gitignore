@@ -2,7 +2,11 @@ node_modules/
 dist/
 .env
 *.db
+*.db-shm
+*.db-wal
 .DS_Store
 Thumbs.db
 *.log
 .vite/
+.expo/
+
