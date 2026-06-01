@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
+import Chatbot from './components/Chatbot'
 import Home from './pages/Home'
 import Plans from './pages/Plans'
 import StudentPlans from './pages/StudentPlans'
@@ -31,6 +32,7 @@ export default function App() {
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             </Routes>
           </main>
+          <Chatbot />
           <Footer />
         </div>
       </AuthProvider>
