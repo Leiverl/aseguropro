@@ -4,11 +4,11 @@ import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
 const advisors = [
-  { name: 'María García', role: 'Asesora Senior', specialties: 'Salud, Vida, Estudiantes' },
-  { name: 'Carlos López', role: 'Especialista en Salud', specialties: 'Salud, Auto' },
-  { name: 'Ana Martínez', role: 'Asesora Estudiantil', specialties: 'Estudiantes, Hogar' },
-  { name: 'Roberto Díaz', role: 'Asesor Multi-ramo', specialties: 'Auto, Hogar, Viajes' },
-  { name: 'Laura Sánchez', role: 'Asesora de Vida', specialties: 'Vida, Salud, Viajes' },
+  { name: 'Mar&iacute;a Garc&iacute;a', role: 'Asesora Senior', specialties: 'Salud, Vida, Estudiantes' },
+  { name: 'Carlos L&oacute;pez', role: 'Especialista en Salud', specialties: 'Salud, Auto' },
+  { name: 'Ana Mart&iacute;nez', role: 'Asesora Estudiantil', specialties: 'Estudiantes, Hogar' },
+  { name: 'Roberto D&iacute;az', role: 'Asesor Multi-ramo', specialties: 'Auto, Hogar, Viajes' },
+  { name: 'Laura S&aacute;nchez', role: 'Asesora de Vida', specialties: 'Vida, Salud, Viajes' },
 ]
 
 const timeSlots = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30']
@@ -126,7 +126,7 @@ export default function Appointment() {
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               className="form-input form-textarea"
-              placeholder="Cuéntanos qué tipo de seguro te interesa..."
+              placeholder="Cu&eacute;ntanos qu&eacute; tipo de seguro te interesa..."
               rows={3}
             />
           </div>
@@ -143,7 +143,6 @@ export default function Appointment() {
             <div className="loading-screen"><div className="spinner"></div></div>
           ) : appointments.length === 0 ? (
             <div className="empty-state">
-              <span className="empty-icon">📅</span>
               <p>No tienes citas agendadas</p>
             </div>
           ) : (
@@ -157,8 +156,8 @@ export default function Appointment() {
                     </span>
                   </div>
                   <div className="apt-details">
-                    <span>📅 {apt.date}</span>
-                    <span>⏰ {apt.time}</span>
+                    <span>{apt.date}</span>
+                    <span>{apt.time}</span>
                   </div>
                   {apt.notes && <p className="apt-notes">{apt.notes}</p>}
                   <button className="btn btn-outline btn-sm btn-danger" onClick={() => handleDelete(apt.id)}>

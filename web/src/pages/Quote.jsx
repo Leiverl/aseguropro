@@ -4,12 +4,12 @@ import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
 const planTypes = [
-  { value: 'health', label: 'Salud', icon: '🏥', color: '#ef4444' },
-  { value: 'auto', label: 'Auto', icon: '🚗', color: '#3b82f6' },
-  { value: 'home', label: 'Hogar', icon: '🏠', color: '#22c55e' },
-  { value: 'life', label: 'Vida', icon: '👨‍👩‍👧‍👦', color: '#a855f7' },
-  { value: 'travel', label: 'Viajes', icon: '✈️', color: '#f59e0b' },
-  { value: 'student', label: 'Estudiante', icon: '🎓', color: '#06b6d4' },
+  { value: 'health', label: 'Salud', color: '#1e40af' },
+  { value: 'auto', label: 'Auto', color: '#1e40af' },
+  { value: 'home', label: 'Hogar', color: '#1e40af' },
+  { value: 'life', label: 'Vida', color: '#1e40af' },
+  { value: 'travel', label: 'Viajes', color: '#1e40af' },
+  { value: 'student', label: 'Estudiante', color: '#0d9488' },
 ]
 
 export default function Quote() {
@@ -61,16 +61,14 @@ export default function Quote() {
 
       {step === 1 && (
         <div className="quote-type-select">
-          <h2>¿Qué tipo de seguro necesitas?</h2>
+          <h2>&iquest;Qu&eacute; tipo de seguro necesitas?</h2>
           <div className="type-grid">
             {planTypes.map(pt => (
               <button
                 key={pt.value}
                 className={`type-card ${form.plan_type === pt.value ? 'selected' : ''}`}
-                style={form.plan_type === pt.value ? { borderColor: pt.color, background: pt.color + '10' } : {}}
                 onClick={() => { setForm({ ...form, plan_type: pt.value }); setStep(2) }}
               >
-                <span className="type-icon">{pt.icon}</span>
                 <span className="type-label">{pt.label}</span>
               </button>
             ))}
@@ -85,8 +83,7 @@ export default function Quote() {
           <div className="form-group">
             <label>Tipo de seguro</label>
             <div className="form-selected-type">
-              <span>{planTypes.find(p => p.value === form.plan_type)?.icon}</span>
-              {planTypes.find(p => p.value === form.plan_type)?.label}
+              <span>{planTypes.find(p => p.value === form.plan_type)?.label}</span>
               <button type="button" className="btn-link" onClick={() => setStep(1)}>Cambiar</button>
             </div>
           </div>
@@ -121,7 +118,7 @@ export default function Quote() {
           {error && <div className="form-error">{error}</div>}
 
           <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
-            {loading ? 'Calculando...' : 'Calcular Cotización'}
+            {loading ? 'Calculando...' : 'Calcular Cotizaci&oacute;n'}
           </button>
         </form>
       )}
@@ -130,8 +127,7 @@ export default function Quote() {
         <div className="quote-result">
           <div className="result-card">
             <div className="result-header">
-              <span className="result-icon">✅</span>
-              <h2>Tu Cotización</h2>
+              <h2>Tu Cotizaci&oacute;n</h2>
             </div>
             <div className="result-amounts">
               <div className="result-amount">
@@ -146,13 +142,13 @@ export default function Quote() {
             <div className="result-details">
               <div className="result-detail"><span>Tipo:</span> {planTypes.find(p => p.value === result.plan_type)?.label}</div>
               <div className="result-detail"><span>Cobertura:</span> ${result.coverage_amount.toLocaleString()}</div>
-              <div className="result-detail"><span>Edad:</span> {result.age} años</div>
+              <div className="result-detail"><span>Edad:</span> {result.age} a&ntilde;os</div>
               <div className="result-detail"><span>Tasa base:</span> {(result.details.base_rate * 100).toFixed(1)}%</div>
               <div className="result-detail"><span>Factor edad:</span> {result.details.age_factor.toFixed(2)}x</div>
             </div>
             <div className="result-actions">
               <button className="btn btn-primary" onClick={() => navigate('/appointment')}>Agendar Cita</button>
-              <button className="btn btn-outline" onClick={() => { setStep(1); setResult(null) }}>Nueva Cotización</button>
+              <button className="btn btn-outline" onClick={() => { setStep(1); setResult(null) }}>Nueva Cotizaci&oacute;n</button>
             </div>
           </div>
         </div>

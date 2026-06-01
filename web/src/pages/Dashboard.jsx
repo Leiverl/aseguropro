@@ -34,7 +34,7 @@ export default function Dashboard() {
         <div className="dashboard-stats">
           <div className="stat-card">
             <span className="stat-value">{policies.length}</span>
-            <span className="stat-label">Pólizas Activas</span>
+            <span className="stat-label">P&oacute;lizas Activas</span>
           </div>
           <div className="stat-card">
             <span className="stat-value">{appointments.filter(a => a.status === 'pending').length}</span>
@@ -46,21 +46,20 @@ export default function Dashboard() {
       <div className="dashboard-grid">
         <section className="dashboard-section">
           <div className="section-title-row">
-            <h2>Mis Pólizas</h2>
+            <h2>Mis P&oacute;lizas</h2>
             <Link to="/plans" className="btn btn-outline btn-sm">Contratar</Link>
           </div>
           {policies.length === 0 ? (
             <div className="empty-state">
-              <span className="empty-icon">📋</span>
-              <p>Aún no tienes pólizas activas</p>
+              <p>A&uacute;n no tienes p&oacute;lizas activas</p>
               <Link to="/plans" className="btn btn-primary">Ver Planes</Link>
             </div>
           ) : (
             <div className="policies-list">
               {policies.map(p => (
                 <div key={p.id} className="policy-card">
-                  <div className="policy-icon" style={{ background: (p.color || '#3b82f6') + '20' }}>
-                    {getPlanIcon(p.icon)}
+                  <div className="policy-icon" style={{ background: (p.color || '#1e40af') + '15', color: p.color || '#1e40af' }}>
+                    {p.plan_name?.[0] || 'S'}
                   </div>
                   <div className="policy-info">
                     <h3>{p.plan_name}</h3>
@@ -87,7 +86,6 @@ export default function Dashboard() {
           </div>
           {appointments.length === 0 ? (
             <div className="empty-state">
-              <span className="empty-icon">📅</span>
               <p>No tienes citas agendadas</p>
               <Link to="/appointment" className="btn btn-primary">Agendar Cita</Link>
             </div>
@@ -102,8 +100,8 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="apt-details">
-                    <span>📅 {apt.date}</span>
-                    <span>⏰ {apt.time}</span>
+                    <span>{apt.date}</span>
+                    <span>{apt.time}</span>
                   </div>
                 </div>
               ))}
@@ -114,26 +112,18 @@ export default function Dashboard() {
 
       <section className="dashboard-actions">
         <Link to="/quote" className="action-card">
-          <span className="action-icon">💰</span>
           <h3>Cotizar</h3>
           <p>Calcula tu prima personalizada</p>
         </Link>
         <Link to="/appointment" className="action-card">
-          <span className="action-icon">📞</span>
           <h3>Agendar Cita</h3>
           <p>Habla con un asesor</p>
         </Link>
         <Link to="/plans" className="action-card">
-          <span className="action-icon">📋</span>
           <h3>Ver Planes</h3>
           <p>Explora todas las coberturas</p>
         </Link>
       </section>
     </div>
   )
-}
-
-function getPlanIcon(icon) {
-  const icons = { 'heart': '🏥', 'car': '🚗', 'home': '🏠', 'users': '👨‍👩‍👧‍👦', 'plane': '✈️', 'graduation-cap': '🎓' }
-  return icons[icon] || '🛡️'
 }

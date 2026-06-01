@@ -1,8 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
 
-const DEVICE_IP = '192.168.8.106'; // CAMBIA ESTO por la IP de tu PC (ejecutá ipconfig)
-const API = Platform.OS === 'android' ? `http://${DEVICE_IP}:3001/api` : 'http://localhost:3001/api';
+const API = 'https://aseguropro-production.up.railway.app/api';
 
 async function getToken() {
   return await AsyncStorage.getItem('token');

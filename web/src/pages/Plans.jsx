@@ -3,8 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom'
 import { api } from '../api'
 
 const typeNames = { health: 'Salud', auto: 'Auto', home: 'Hogar', life: 'Vida', travel: 'Viajes', student: 'Estudiantes' }
-const typeIcons = { health: '🏥', auto: '🚗', home: '🏠', life: '👨‍👩‍👧‍👦', travel: '✈️', student: '🎓' }
-const typeColors = { health: '#ef4444', auto: '#3b82f6', home: '#22c55e', life: '#a855f7', travel: '#f59e0b', student: '#06b6d4' }
+const typeColors = { health: '#1e40af', auto: '#1e40af', home: '#1e40af', life: '#1e40af', travel: '#1e40af', student: '#0d9488' }
 
 export default function Plans() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -35,10 +34,9 @@ export default function Plans() {
           <button
             key={key}
             className={`filter-btn ${activeType === key ? 'active' : ''}`}
-            style={activeType === key ? { background: typeColors[key], borderColor: typeColors[key] } : {}}
             onClick={() => setSearchParams({ type: key })}
           >
-            {typeIcons[key]} {name}
+            {name}
           </button>
         ))}
       </div>
@@ -48,16 +46,16 @@ export default function Plans() {
       ) : (
         <div className="plans-list">
           {plans.map(plan => (
-            <div key={plan.id} className="plan-card-full" style={{ '--plan-color': plan.color }}>
-              {plan.popular ? <div className="plan-card-badge">Más contratado</div> : null}
+            <div key={plan.id} className="plan-card-full">
+              {plan.popular ? <div className="plan-card-badge">M&aacute;s contratado</div> : null}
               <div className="plan-card-header">
-                <div className="plan-card-icon" style={{ background: plan.color + '20' }}>
-                  {getPlanIcon(plan.icon)}
+                <div className="plan-card-icon" style={{ background: plan.color + '15', color: plan.color }}>
+                  {plan.name[0]}
                 </div>
                 <div>
                   <h3>{plan.name}</h3>
-                  <span className="plan-type-badge" style={{ background: plan.color + '20', color: plan.color }}>
-                    {typeIcons[plan.type]} {typeNames[plan.type]}
+                  <span className="plan-type-badge" style={{ background: typeColors[plan.type] + '12', color: typeColors[plan.type] }}>
+                    {typeNames[plan.type]}
                   </span>
                 </div>
               </div>
@@ -66,11 +64,11 @@ export default function Plans() {
               <div className="plan-details">
                 <div className="plan-detail-section">
                   <h4>Cobertura</h4>
-                  <ul>{plan.coverage?.split(',').map((c, i) => <li key={i}>✓ {c.trim()}</li>)}</ul>
+                  <ul>{plan.coverage?.split(',').map((c, i) => <li key={i}>{c.trim()}</li>)}</ul>
                 </div>
                 <div className="plan-detail-section">
                   <h4>Beneficios</h4>
-                  <ul>{plan.benefits?.split(',').map((b, i) => <li key={i}>✓ {b.trim()}</li>)}</ul>
+                  <ul>{plan.benefits?.split(',').map((b, i) => <li key={i}>{b.trim()}</li>)}</ul>
                 </div>
               </div>
               <div className="plan-card-actions">
@@ -83,9 +81,4 @@ export default function Plans() {
       )}
     </div>
   )
-}
-
-function getPlanIcon(icon) {
-  const icons = { 'heart': '🏥', 'car': '🚗', 'home': '🏠', 'users': '👨‍👩‍👧‍👦', 'plane': '✈️', 'graduation-cap': '🎓' }
-  return icons[icon] || '🛡️'
 }

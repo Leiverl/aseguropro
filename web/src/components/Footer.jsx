@@ -6,10 +6,10 @@ export default function Footer() {
       <div className="footer-content">
         <div className="footer-section">
           <div className="footer-logo">
-            <span className="nav-logo-icon">🛡️</span>
+            <span className="nav-logo-icon">S</span>
             SeguroPro
           </div>
-          <p className="footer-desc">Protegemos lo que más te importa. Más de 50,000 clientes confían en nosotros para cuidar su salud, auto, hogar, vida y estudios.</p>
+          <p className="footer-desc">Protegemos lo que m&aacute;s te importa. M&aacute;s de 50,000 clientes conf&iacute;an en nosotros para cuidar su salud, auto, hogar, vida y estudios.</p>
         </div>
         <div className="footer-section">
           <h4>Productos</h4>
@@ -20,7 +20,7 @@ export default function Footer() {
           <Link to="/plans/student">Seguro Estudiantil</Link>
         </div>
         <div className="footer-section">
-          <h4>Compañía</h4>
+          <h4>Compa&ntilde;&iacute;a</h4>
           <a href="#">Sobre Nosotros</a>
           <a href="#">Sucursales</a>
           <a href="#">Trabaja con Nosotros</a>
@@ -28,9 +28,9 @@ export default function Footer() {
         </div>
         <div className="footer-section">
           <h4>Contacto</h4>
-          <p>📞 (555) 123-4567</p>
-          <p>✉️ info@seguropro.com</p>
-          <p>📍 Av. Principal 123, Ciudad</p>
+          <p>Tel: (555) 123-4567</p>
+          <p>Email: info@seguropro.com</p>
+          <p>Av. Principal 123, Ciudad</p>
         </div>
       </div>
       <div className="footer-bottom">

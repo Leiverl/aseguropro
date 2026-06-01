@@ -4,12 +4,16 @@ import {
   ActivityIndicator, KeyboardAvoidingView, Platform
 } from 'react-native';
 import { useAuth } from '../services/AuthContext';
+import { useTheme } from '../services/ThemeContext';
 
 export default function LoginScreen({ navigation }) {
+  const { colors } = useTheme();
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const s = makeStyles(colors);
 
   const handleLogin = async () => {
     if (!email || !password) { Alert.alert('Error', 'Completa todos los campos'); return; }
@@ -25,46 +29,42 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <View style={styles.bgGlow} />
-      <View style={styles.content}>
-        <View style={styles.logoWrap}>
-          <Text style={styles.logo}>🛡️</Text>
-        </View>
-        <Text style={styles.title}>SeguroPro</Text>
-        <Text style={styles.subtitle}>Tu seguridad, nuestra prioridad</Text>
+    <KeyboardAvoidingView style={s.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <View style={s.content}>
+        <Text style={s.title}>SeguroPro</Text>
+        <Text style={s.subtitle}>Tu seguridad, nuestra prioridad</Text>
 
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Iniciar Sesión</Text>
+        <View style={[s.card, { borderColor: colors.border }]}>
+          <Text style={s.cardTitle}>Iniciar Sesi&oacute;n</Text>
 
           <TextInput
-            style={styles.input}
+            style={[s.input, { borderColor: colors.border }]}
             placeholder="Email"
-            placeholderTextColor="#475569"
+            placeholderTextColor={colors.textMuted}
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
             keyboardType="email-address"
           />
           <TextInput
-            style={styles.input}
-            placeholder="Contraseña"
-            placeholderTextColor="#475569"
+            style={[s.input, { borderColor: colors.border }]}
+            placeholder="Contrase&ntilde;a"
+            placeholderTextColor={colors.textMuted}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
           />
 
-          <View style={styles.demoBox}>
-            <Text style={styles.demoText}>Demo: demo@email.com / demo123</Text>
+          <View style={[s.demoBox, { borderColor: colors.primary + '20' }]}>
+            <Text style={s.demoText}>Demo: demo@email.com / demo123</Text>
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading} activeOpacity={0.8}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Ingresar</Text>}
+          <TouchableOpacity style={[s.button, { backgroundColor: colors.primary }]} onPress={handleLogin} disabled={loading} activeOpacity={0.8}>
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={s.buttonText}>Ingresar</Text>}
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.linkWrap}>
-            <Text style={styles.link}>¿No tienes cuenta? <Text style={styles.linkBold}>Regístrate</Text></Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')} style={s.linkWrap}>
+            <Text style={s.link}>&iquest;No tienes cuenta? <Text style={[s.linkBold, { color: colors.primaryLight }]}>Reg&iacute;strate</Text></Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -72,38 +72,35 @@ export default function LoginScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#050510' },
-  bgGlow: {
-    position: 'absolute', top: -120, width: 250, height: 250,
-    borderRadius: 125, backgroundColor: 'rgba(99, 102, 241, 0.06)', alignSelf: 'center',
-  },
+const makeStyles = (colors) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.bg },
   content: { flex: 1, justifyContent: 'center', padding: 24 },
-  logoWrap: { alignItems: 'center', marginBottom: 12 },
-  logo: { fontSize: 56 },
-  title: { fontSize: 32, fontWeight: '900', color: '#f1f5f9', textAlign: 'center', letterSpacing: -0.5 },
-  subtitle: { fontSize: 14, color: '#94a3b8', textAlign: 'center', marginTop: 4, marginBottom: 32 },
+  title: { fontSize: 28, fontWeight: '900', color: colors.text, textAlign: 'center', letterSpacing: -0.3 },
+  subtitle: { fontSize: 13, color: colors.textSecondary, textAlign: 'center', marginTop: 4, marginBottom: 28 },
   card: {
-    backgroundColor: 'rgba(15, 15, 30, 0.85)', borderRadius: 20, padding: 28,
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.06)',
+    backgroundColor: colors.bgCard, borderRadius: 8, padding: 24,
+    borderWidth: 1,
   },
-  cardTitle: { fontSize: 20, fontWeight: '800', color: '#f1f5f9', marginBottom: 24, textAlign: 'center' },
+  cardTitle: { fontSize: 18, fontWeight: '800', color: colors.text, marginBottom: 20, textAlign: 'center' },
   input: {
-    backgroundColor: 'rgba(30, 30, 60, 0.9)', borderRadius: 12, padding: 16, fontSize: 15,
-    color: '#f1f5f9', marginBottom: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.06)',
+    backgroundColor: colors.bgInput, borderRadius: 6, padding: 14, fontSize: 14,
+    color: colors.text, marginBottom: 10, borderWidth: 1,
   },
   demoBox: {
-    backgroundColor: 'rgba(99, 102, 241, 0.08)', borderRadius: 10, padding: 12,
-    marginBottom: 20, borderWidth: 1, borderColor: 'rgba(99, 102, 241, 0.15)',
+    backgroundColor: colors.primary + '08', borderRadius: 6, padding: 10,
+    marginBottom: 16, borderWidth: 1,
   },
-  demoText: { textAlign: 'center', color: '#818cf8', fontSize: 12, fontWeight: '600' },
+  demoText: { textAlign: 'center', color: colors.primaryLight, fontSize: 11, fontWeight: '600' },
   button: {
-    backgroundColor: '#6366f1', borderRadius: 12, padding: 16, alignItems: 'center',
-    shadowColor: '#6366f1', shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3, shadowRadius: 12, elevation: 8,
+    borderRadius: 6, padding: 14, alignItems: 'center',
+    ...shadows(colors).primary,
   },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-  linkWrap: { marginTop: 20, alignItems: 'center' },
-  link: { color: '#94a3b8', fontSize: 14 },
-  linkBold: { color: '#818cf8', fontWeight: '700' },
+  buttonText: { color: '#fff', fontSize: 15, fontWeight: '700' },
+  linkWrap: { marginTop: 16, alignItems: 'center' },
+  link: { color: colors.textSecondary, fontSize: 13 },
+  linkBold: { fontWeight: '700' },
+});
+
+const shadows = (colors) => ({
+  primary: { shadowColor: colors.primary, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 4, elevation: 3 },
 });

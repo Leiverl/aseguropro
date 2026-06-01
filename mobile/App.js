@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, useColorScheme } from 'react-native';
+import { Text, View } from 'react-native';
 import { AuthProvider, useAuth } from './src/services/AuthContext';
 import { ThemeProvider, useTheme } from './src/services/ThemeContext';
 import LoginScreen from './src/screens/LoginScreen';
@@ -17,33 +17,43 @@ import DashboardScreen from './src/screens/DashboardScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function TabIcon({ label, focused }) {
-  const icons = { Inicio: '🏠', Planes: '📋', Cotizar: '💰', Citas: '📅', Cuenta: '👤' };
+const tabLabels = { Inicio: '', Planes: '', Cotizar: '', Citas: '', Cuenta: '' };
+
+function TabIcon({ label, focused, color }) {
+  const icons = { Inicio: 'I', Planes: 'P', Cotizar: 'C', Citas: 'A', Cuenta: 'U' };
   return (
     <View style={{ alignItems: 'center' }}>
-      <Text style={{ fontSize: focused ? 24 : 20 }}>{icons[label] || '📋'}</Text>
-      {focused && <View style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: '#818cf8', marginTop: 2 }} />}
+      <View style={{
+        width: 28, height: 28, borderRadius: 6,
+        backgroundColor: focused ? color + '15' : 'transparent',
+        alignItems: 'center', justifyContent: 'center',
+      }}>
+        <Text style={{ fontSize: 13, fontWeight: '700', color: focused ? color : '#64748b' }}>
+          {icons[label]}
+        </Text>
+      </View>
     </View>
   );
 }
 
 function MainTabs() {
+  const { colors } = useTheme();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarIcon: ({ focused }) => <TabIcon label={route.name} focused={focused} />,
+        tabBarIcon: ({ focused }) => <TabIcon label={route.name} focused={focused} color={colors.primary} />,
         tabBarStyle: {
-          backgroundColor: 'rgba(10, 10, 25, 0.95)',
-          borderTopColor: 'rgba(255, 255, 255, 0.06)',
+          backgroundColor: colors.bgCard,
+          borderTopColor: colors.border,
           borderTopWidth: 1,
-          paddingBottom: 24,
-          paddingTop: 10,
-          height: 80,
+          paddingBottom: 20,
+          paddingTop: 8,
+          height: 64,
         },
-        tabBarActiveTintColor: '#818cf8',
-        tabBarInactiveTintColor: '#64748b',
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600', marginTop: -2 },
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textMuted,
+        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       })}
     >
       <Tab.Screen name="Inicio" component={HomeScreen} />

@@ -25,7 +25,7 @@ export default function Navbar() {
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
         <Link to="/" className="nav-logo">
-          <span className="nav-logo-icon">🛡️</span>
+          <span className="nav-logo-icon">S</span>
           SeguroPro
         </Link>
 
@@ -39,7 +39,7 @@ export default function Navbar() {
 
         <div className="nav-right">
           <button className="theme-toggle" onClick={toggleTheme} title="Cambiar tema">
-            {theme === 'dark' ? '☀️' : '🌙'}
+            {theme === 'dark' ? <>&#9728;</> : <>&#9790;</>}
           </button>
 
           <div className="nav-desktop-auth">
@@ -48,7 +48,7 @@ export default function Navbar() {
                 <Link to="/dashboard" className="nav-link">
                   <span className="user-avatar">{user.name[0]}</span>
                 </Link>
-                <button className="btn btn-outline btn-sm" onClick={handleLogout}>Cerrar Sesión</button>
+                <button className="btn btn-outline btn-sm" onClick={handleLogout}>Salir</button>
               </div>
             ) : (
               <div className="nav-auth">
@@ -59,7 +59,7 @@ export default function Navbar() {
           </div>
 
           <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? '✕' : '☰'}
+            {menuOpen ? <>&#10005;</> : <>&#9776;</>}
           </button>
         </div>
       </div>

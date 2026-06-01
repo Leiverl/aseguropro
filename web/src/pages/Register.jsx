@@ -27,9 +27,8 @@ export default function Register() {
     <div className="page auth-page">
       <div className="auth-card">
         <div className="auth-header">
-          <span className="auth-icon">🛡️</span>
           <h2>Crear Cuenta</h2>
-          <p>Únete a SeguroPro y protege lo que más te importa</p>
+          <p>&Uacute;nete a SeguroPro y protege lo que m&aacute;s te importa</p>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -40,7 +39,7 @@ export default function Register() {
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="form-input"
-              placeholder="Juan Pérez"
+              placeholder="Juan P&eacute;rez"
               required
             />
           </div>
@@ -58,7 +57,7 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label>Teléfono</label>
+            <label>Tel&eacute;fono</label>
             <input
               type="tel"
               value={form.phone}
@@ -69,13 +68,13 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label>Contraseña</label>
+            <label>Contrase&ntilde;a</label>
             <input
               type="password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="form-input"
-              placeholder="Mínimo 6 caracteres"
+              placeholder="M&iacute;nimo 6 caracteres"
               minLength={6}
               required
             />
@@ -89,7 +88,7 @@ export default function Register() {
         </form>
 
         <p className="auth-footer">
-          ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+          &iquest;Ya tienes cuenta? <Link to="/login">Inicia sesi&oacute;n</Link>
         </p>
       </div>
     </div>

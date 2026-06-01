@@ -27,8 +27,7 @@ export default function Login() {
     <div className="page auth-page">
       <div className="auth-card">
         <div className="auth-header">
-          <span className="auth-icon">🛡️</span>
-          <h2>Iniciar Sesión</h2>
+          <h2>Iniciar Sesi&oacute;n</h2>
           <p>Ingresa a tu cuenta de SeguroPro</p>
         </div>
 
@@ -46,13 +45,13 @@ export default function Login() {
           </div>
 
           <div className="form-group">
-            <label>Contraseña</label>
+            <label>Contrase&ntilde;a</label>
             <input
               type="password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="form-input"
-              placeholder="••••••••"
+              placeholder="Ingresa tu contrase&ntilde;a"
               required
             />
           </div>
@@ -69,7 +68,7 @@ export default function Login() {
         </form>
 
         <p className="auth-footer">
-          ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+          &iquest;No tienes cuenta? <Link to="/register">Reg&iacute;strate aqu&iacute;</Link>
         </p>
       </div>
     </div>

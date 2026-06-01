@@ -4,20 +4,19 @@ import { api } from '../services/api';
 import { useAuth } from '../services/AuthContext';
 import { useTheme } from '../services/ThemeContext';
 
-const planIcons = { heart: '🏥', car: '🚗', home: '🏠', users: '👨‍👩‍👧‍👦', plane: '✈️', 'graduation-cap': '🎓' };
-const getIcon = (icon) => planIcons[icon] || '🛡️';
-
 export default function DashboardScreen({ navigation }) {
+  const { colors } = useTheme();
   const { user, logout } = useAuth();
-  const { colors, isDark, toggleTheme } = useTheme();
   const [policies, setPolicies] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const s = makeStyles(colors);
+
   useEffect(() => {
     Promise.all([
       api.getPolicies().catch(() => ({ policies: [] })),
-      api.getAppointments().catch(() => ({ appointments: [] }))
+      api.getAppointments().catch(() => ({ appointments: [] })),
     ]).then(([pData, aData]) => {
       setPolicies(pData.policies);
       setAppointments(aData.appointments);
@@ -29,170 +28,172 @@ export default function DashboardScreen({ navigation }) {
     navigation.replace('Login');
   };
 
-  const s = makeStyles(colors);
-
-  if (loading) return <View style={[s.container, { backgroundColor: colors.bg }]}><ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 80 }} /></View>;
+  if (loading) {
+    return (
+      <View style={[s.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   return (
-    <ScrollView style={[s.container, { backgroundColor: colors.bg }]} showsVerticalScrollIndicator={false}>
+    <ScrollView style={s.container} showsVerticalScrollIndicator={false}>
       <View style={s.header}>
         <View style={s.welcomeRow}>
           <View style={s.avatar}>
             <Text style={s.avatarText}>{user?.name?.[0] || 'U'}</Text>
           </View>
           <View>
-            <Text style={[s.greeting, { color: colors.textMuted }]}>Bienvenido</Text>
-            <Text style={[s.userName, { color: colors.text }]}>{user?.name}</Text>
+            <Text style={s.welcome}>Bienvenido, {user?.name}</Text>
+            <Text style={s.email}>{user?.email}</Text>
           </View>
         </View>
         <View style={s.statsRow}>
-          <View style={[s.statCard, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
-            <Text style={[s.statValue, { color: colors.primaryLight }]}>{policies.length}</Text>
-            <Text style={[s.statLabel, { color: colors.textMuted }]}>Pólizas activas</Text>
+          <View style={[s.statCard, { borderColor: colors.border }]}>
+            <Text style={[s.statValue, { color: colors.primary }]}>{policies.length}</Text>
+            <Text style={s.statLabel}>P&oacute;lizas</Text>
           </View>
-          <View style={[s.statCard, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
-            <Text style={[s.statValue, { color: colors.primaryLight }]}>{appointments.filter(a => a.status === 'pending').length}</Text>
-            <Text style={[s.statLabel, { color: colors.textMuted }]}>Citas pendientes</Text>
+          <View style={[s.statCard, { borderColor: colors.border }]}>
+            <Text style={[s.statValue, { color: colors.primary }]}>{appointments.filter(a => a.status === 'pending').length}</Text>
+            <Text style={s.statLabel}>Citas</Text>
           </View>
         </View>
       </View>
 
-      <View style={s.quickActions}>
-        {[
-          { icon: '💰', label: 'Cotizar', screen: 'Cotizar' },
-          { icon: '📅', label: 'Agendar', screen: 'Citas' },
-          { icon: '📋', label: 'Planes', screen: 'Planes' },
-        ].map((a, i) => (
-          <TouchableOpacity key={i} style={[s.quickBtn, { backgroundColor: colors.bgCard, borderColor: colors.border }]} onPress={() => navigation.navigate(a.screen)} activeOpacity={0.7}>
-            <Text style={s.quickIcon}>{a.icon}</Text>
-            <Text style={[s.quickLabel, { color: colors.text }]}>{a.label}</Text>
-          </TouchableOpacity>
-        ))}
+      {/* Actions */}
+      <View style={s.actionsGrid}>
+        <TouchableOpacity style={[s.actionCard, { borderColor: colors.border }]} onPress={() => navigation.navigate('Cotizar')}>
+          <Text style={s.actionTitle}>Cotizar</Text>
+          <Text style={s.actionDesc}>Calcula tu prima</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[s.actionCard, { borderColor: colors.border }]} onPress={() => navigation.navigate('Citas')}>
+          <Text style={s.actionTitle}>Agendar Cita</Text>
+          <Text style={s.actionDesc}>Habla con un asesor</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[s.actionCard, { borderColor: colors.border }]} onPress={() => navigation.navigate('Planes')}>
+          <Text style={s.actionTitle}>Ver Planes</Text>
+          <Text style={s.actionDesc}>Explora coberturas</Text>
+        </TouchableOpacity>
       </View>
 
+      {/* P&oacute;lizas */}
       <View style={s.section}>
-        <View style={s.sectionHeader}>
-          <Text style={[s.sectionTitle, { color: colors.text }]}>Mis Pólizas</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Planes')}>
-            <Text style={[s.seeAll, { color: colors.primaryLight }]}>+ Nueva</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={s.sectionTitle}>Mis P&oacute;lizas</Text>
         {policies.length === 0 ? (
           <View style={s.emptyState}>
-            <Text style={s.emptyIcon}>📋</Text>
-            <Text style={[s.emptyText, { color: colors.textDim }]}>Aún no tienes pólizas</Text>
+            <Text style={s.emptyText}>A&uacute;n no tienes p&oacute;lizas</Text>
           </View>
         ) : (
           policies.map(p => (
-            <View key={p.id} style={[s.policyCard, { backgroundColor: colors.bgInput, borderColor: colors.border }]}>
-              <View style={s.policyIconWrap}>
-                <Text style={s.policyIcon}>{getIcon(p.icon)}</Text>
+            <View key={p.id} style={[s.policyCard, { borderColor: colors.border }]}>
+              <View style={[s.policyIcon, { backgroundColor: (p.color || colors.primary) + '15' }]}>
+                <Text style={{ color: p.color || colors.primary, fontWeight: '700', fontSize: 14 }}>
+                  {p.plan_name?.[0] || 'S'}
+                </Text>
               </View>
-              <View style={{ flex: 1 }}>
-                <Text style={[s.policyName, { color: colors.text }]}>{p.plan_name}</Text>
-                <Text style={[s.policyType, { color: colors.textMuted }]}>{p.plan_type}</Text>
-                <Text style={[s.policyDates, { color: colors.textDim }]}>{p.start_date} - {p.end_date}</Text>
+              <View style={s.policyInfo}>
+                <Text style={s.policyName}>{p.plan_name}</Text>
+                <Text style={s.policyType}>{p.plan_type}</Text>
               </View>
               <View style={s.policyRight}>
-                <View style={[s.statusDot, p.status === 'active' && { backgroundColor: colors.success }]} />
-                <Text style={[s.policyPrice, { color: colors.primaryLight }]}>${p.price}</Text>
+                <View style={[s.statusBadge, { backgroundColor: p.status === 'active' ? colors.success + '15' : colors.error + '15' }]}>
+                  <Text style={{ color: p.status === 'active' ? colors.success : colors.error, fontSize: 10, fontWeight: '700' }}>
+                    {p.status === 'active' ? 'Activa' : p.status}
+                  </Text>
+                </View>
+                <Text style={[s.policyPrice, { color: colors.primary }]}>${p.price}/mes</Text>
               </View>
             </View>
           ))
         )}
       </View>
 
+      {/* Citas */}
       <View style={s.section}>
-        <View style={s.sectionHeader}>
-          <Text style={[s.sectionTitle, { color: colors.text }]}>Mis Citas</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Citas')}>
-            <Text style={[s.seeAll, { color: colors.primaryLight }]}>+ Nueva</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={s.sectionTitle}>Mis Citas</Text>
         {appointments.length === 0 ? (
           <View style={s.emptyState}>
-            <Text style={s.emptyIcon}>📅</Text>
-            <Text style={[s.emptyText, { color: colors.textDim }]}>No tienes citas</Text>
+            <Text style={s.emptyText}>No tienes citas agendadas</Text>
           </View>
         ) : (
-          appointments.slice(0, 3).map(apt => (
-            <View key={apt.id} style={[s.aptCard, { backgroundColor: colors.bgInput, borderColor: colors.border }]}>
-              <Text style={[s.aptAdvisor, { color: colors.text }]}>{apt.advisor_name}</Text>
-              <Text style={[s.aptDate, { color: colors.textMuted }]}>📅 {apt.date} · ⏰ {apt.time}</Text>
+          appointments.slice(0, 5).map(apt => (
+            <View key={apt.id} style={[s.apptCard, { borderColor: colors.border }]}>
+              <View style={s.apptHeader}>
+                <Text style={s.apptName}>{apt.advisor_name}</Text>
+                <View style={[s.apptStatus, { backgroundColor: apt.status === 'pending' ? colors.accent + '10' : colors.success + '10' }]}>
+                  <Text style={{ color: apt.status === 'pending' ? colors.accent : colors.success, fontSize: 10, fontWeight: '700' }}>
+                    {apt.status === 'pending' ? 'Pendiente' : 'Confirmada'}
+                  </Text>
+                </View>
+              </View>
+              <Text style={s.apptDate}>{apt.date} &middot; {apt.time}</Text>
             </View>
           ))
         )}
       </View>
 
-      <TouchableOpacity style={[s.themeBtn, { borderColor: colors.primary + '33', backgroundColor: colors.primary + '0D' }]} onPress={toggleTheme} activeOpacity={0.7}>
-        <Text style={[s.themeBtnText, { color: colors.primaryLight }]}>{isDark ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}</Text>
+      <TouchableOpacity style={[s.logoutBtn, { borderColor: colors.border }]} onPress={handleLogout}>
+        <Text style={[s.logoutText, { color: colors.error }]}>Cerrar Sesi&oacute;n</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={s.logoutBtn} onPress={handleLogout} activeOpacity={0.7}>
-        <Text style={s.logoutText}>Cerrar Sesión</Text>
-      </TouchableOpacity>
       <View style={{ height: 40 }} />
     </ScrollView>
   );
 }
 
-const makeStyles = (c) => StyleSheet.create({
-  container: { flex: 1 },
-  header: { paddingHorizontal: 24, paddingTop: 60, paddingBottom: 20 },
-  welcomeRow: { flexDirection: 'row', alignItems: 'center', gap: 16, marginBottom: 24 },
+const makeStyles = (colors) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.bg },
+  header: { paddingHorizontal: 24, paddingTop: 60, paddingBottom: 16 },
+  welcomeRow: { flexDirection: 'row', alignItems: 'center', gap: 14, marginBottom: 24 },
   avatar: {
-    width: 56, height: 56, borderRadius: 28,
-    backgroundColor: c.primary, alignItems: 'center', justifyContent: 'center',
-    shadowColor: c.primary, shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3, shadowRadius: 12, elevation: 8,
+    width: 48, height: 48, borderRadius: 24, backgroundColor: colors.primary,
+    alignItems: 'center', justifyContent: 'center',
   },
-  avatarText: { color: '#fff', fontSize: 22, fontWeight: '700' },
-  greeting: { fontSize: 14 },
-  userName: { fontSize: 22, fontWeight: '800' },
+  avatarText: { color: '#fff', fontSize: 18, fontWeight: '700' },
+  welcome: { fontSize: 18, fontWeight: '800', color: colors.text, letterSpacing: -0.3 },
+  email: { fontSize: 12, color: colors.textSecondary, marginTop: 2 },
   statsRow: { flexDirection: 'row', gap: 12 },
   statCard: {
-    flex: 1, borderRadius: 16, padding: 20, borderWidth: 1,
+    flex: 1, backgroundColor: colors.bgCard, borderRadius: 8,
+    padding: 20, borderWidth: 1,
   },
-  statValue: { fontSize: 28, fontWeight: '900' },
-  statLabel: { fontSize: 12, marginTop: 4 },
-  quickActions: { flexDirection: 'row', paddingHorizontal: 24, gap: 10, marginBottom: 24 },
-  quickBtn: {
-    flex: 1, borderRadius: 14, padding: 16, alignItems: 'center', borderWidth: 1,
+  statValue: { fontSize: 28, fontWeight: '900', letterSpacing: -0.3 },
+  statLabel: { fontSize: 12, color: colors.textSecondary, marginTop: 4 },
+  actionsGrid: {
+    flexDirection: 'row', flexWrap: 'wrap', gap: 8,
+    paddingHorizontal: 24, marginBottom: 24,
   },
-  quickIcon: { fontSize: 24, marginBottom: 6 },
-  quickLabel: { fontSize: 12, fontWeight: '600' },
-  section: { paddingHorizontal: 24, marginBottom: 24 },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  sectionTitle: { fontSize: 18, fontWeight: '800' },
-  seeAll: { fontSize: 14, fontWeight: '700' },
-  emptyState: { alignItems: 'center', paddingVertical: 30 },
-  emptyIcon: { fontSize: 36, marginBottom: 12 },
-  emptyText: { fontSize: 14 },
+  actionCard: {
+    backgroundColor: colors.bgCard, borderRadius: 8, padding: 18,
+    width: '48%', borderWidth: 1,
+  },
+  actionTitle: { fontSize: 14, fontWeight: '700', color: colors.text },
+  actionDesc: { fontSize: 11, color: colors.textSecondary, marginTop: 2 },
+  section: { paddingHorizontal: 24, marginBottom: 20 },
+  sectionTitle: { fontSize: 16, fontWeight: '800', color: colors.text, marginBottom: 12 },
+  emptyState: { paddingVertical: 20, alignItems: 'center' },
+  emptyText: { color: colors.textMuted, fontSize: 13 },
   policyCard: {
-    flexDirection: 'row', alignItems: 'center', gap: 14,
-    borderRadius: 14, padding: 16, marginBottom: 10, borderWidth: 1,
+    flexDirection: 'row', alignItems: 'center', backgroundColor: colors.bgCard,
+    borderRadius: 8, padding: 14, marginBottom: 8, borderWidth: 1,
   },
-  policyIconWrap: { width: 44, height: 44, borderRadius: 12, backgroundColor: c.primary + '1A', alignItems: 'center', justifyContent: 'center' },
-  policyIcon: { fontSize: 20 },
-  policyName: { fontSize: 15, fontWeight: '700' },
-  policyType: { fontSize: 12, textTransform: 'capitalize' },
-  policyDates: { fontSize: 11, marginTop: 2 },
-  policyRight: { alignItems: 'flex-end', gap: 4 },
-  statusDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: c.textDim },
-  policyPrice: { fontSize: 16, fontWeight: '800' },
-  aptCard: {
-    borderRadius: 14, padding: 16, marginBottom: 10, borderWidth: 1,
+  policyIcon: { width: 36, height: 36, borderRadius: 6, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  policyInfo: { flex: 1 },
+  policyName: { fontSize: 13, fontWeight: '700', color: colors.text },
+  policyType: { fontSize: 11, color: colors.textSecondary, textTransform: 'capitalize', marginTop: 1 },
+  policyRight: { alignItems: 'flex-end' },
+  statusBadge: { borderRadius: 100, paddingHorizontal: 8, paddingVertical: 2, marginBottom: 4 },
+  policyPrice: { fontSize: 13, fontWeight: '700' },
+  apptCard: {
+    backgroundColor: colors.bgCard, borderRadius: 8, padding: 14, marginBottom: 8, borderWidth: 1,
   },
-  aptAdvisor: { fontSize: 15, fontWeight: '700' },
-  aptDate: { fontSize: 13, marginTop: 6 },
-  themeBtn: {
-    marginHorizontal: 24, marginBottom: 12,
-    borderWidth: 1, borderRadius: 12, padding: 14, alignItems: 'center',
-  },
-  themeBtnText: { fontWeight: '600', fontSize: 15 },
+  apptHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  apptName: { fontSize: 13, fontWeight: '700', color: colors.text },
+  apptStatus: { borderRadius: 100, paddingHorizontal: 8, paddingVertical: 2 },
+  apptDate: { fontSize: 11, color: colors.textSecondary },
   logoutBtn: {
-    marginHorizontal: 24, borderWidth: 1, borderColor: 'rgba(239, 68, 68, 0.2)',
-    borderRadius: 12, padding: 14, alignItems: 'center',
+    marginHorizontal: 24, borderRadius: 8, padding: 14,
+    alignItems: 'center', borderWidth: 1, marginTop: 8,
   },
-  logoutText: { color: '#ef4444', fontWeight: '600', fontSize: 15 },
+  logoutText: { fontWeight: '700', fontSize: 14 },
 });
