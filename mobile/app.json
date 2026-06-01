@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "SeguroPro",
+    "slug": "seguropro",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0a0f1e"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.seguropro.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0f1e"
+      },
+      "package": "com.seguropro.app"
+    }
+  }
+}
