@@ -59,7 +59,7 @@ cd mobile  && npx expo start      # Expo Go (QR for phone)
 ## Deployment
 
 - Backend on Railway (`backend/` base path): Node.js template, `PORT=3001`, start script `start`.
-- Web on Vercel: root dir `web`, env `VITE_API_URL=URL_DEL_BACKEND_EN_RAILWAY/api`
+- Web on Vercel: root dir `web`, env `VITE_API_URL=https://aseguropro-production.up.railway.app/api`
 - Mobile: Expo Go or EAS build.
 
 ## Gotchas
