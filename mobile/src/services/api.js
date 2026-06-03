@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API = 'https://aseguropro-production.up.railway.app/api';
+const API = 'https://aseguropro.on.shiper.app/api';
 
 async function getToken() {
   return await AsyncStorage.getItem('token');

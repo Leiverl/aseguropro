@@ -4,8 +4,9 @@
 
 ```bash
 cd backend && npm start           # Express on :3001 (start first)
+cd backend && npm run dev         # same but with node --watch (Node 18+)
 cd web     && npm run dev         # Vite on :5173, proxies /api -> :3001
-cd mobile  && npx expo start      # Expo (QR for phone)
+cd mobile  && npx expo start      # Expo Go (QR for phone)
 ```
 
 ## Project structure
@@ -25,43 +26,47 @@ cd mobile  && npx expo start      # Expo (QR for phone)
   - `execute(sql, params)` → `{ changes, lastInsertRowid }` (calls `saveDb()`)
   - `execRaw(sql)` → for schema DDL (calls `saveDb()`)
   - `initDb()` must resolve before requests hit routes (done at top of `index.js`)
-- **Writes auto-persist** via `saveDb()` inside `execute`/`execRaw`. If adding raw `db.exec()` calls, call `saveDb()` after.
-- Seed creates 12 plans + demo user. Runs on `postinstall` in Railway, or manually: `cd backend && npm run seed`.
-- Demo: `demo@email.com` / `demo123`
+- **Writes auto-persist** via `saveDb()`. If using raw `db.exec()`, call `saveDb()` after.
+- **Seed is destructive** — re-running deletes all existing data first. Runs via `postinstall` or manually: `cd backend && npm run seed`.
+- Demo: `demo@email.com` / `demo123` — 12 plans (6 types × 2 each).
 
 ## Web
 
 - Vite proxy `/api` → `:3001` in dev. Prod uses `VITE_API_URL` env var.
-- API client at `src/api.js` — bare `fetch` wrapper, no axios.
-- Auth: JWT in `localStorage`, `Authorization: Bearer` header.
+- API client at `src/api.js` — bare `fetch` wrapper, no axios. JWT in `localStorage`, `Authorization: Bearer` header.
 - Theme: `[data-theme]` on `<html>` + CSS vars, persisted in `localStorage`. Toggle in Navbar.
-- Chatbot at `src/components/Chatbot.jsx` — client-side rule-based, no backend.
+- Chatbot at `src/components/Chatbot.jsx` — client-side keyword matching, no backend.
 
 ## Mobile
 
-- API hardcoded to Railway URL (`src/services/api.js`). No local IP needed.
-- Auth: JWT in `AsyncStorage`.
-- Theme: `ThemeContext` + `AsyncStorage` persistence. Toggle in Dashboard screen.
-- Navigation: `React Navigation` — Stack for auth flow, BottomTabs for main.
-- Install with `--legacy-peer-deps` due to version conflicts (Expo 54 + RN 0.81.5 + React 19).
+- API hardcoded to Railway URL in `src/services/api.js` — no local dev fallback.
+- Theme: `ThemeContext` + `AsyncStorage` persistence. **Defaults to dark**. Toggle in Dashboard.
+- Navigation: Stack for auth flow (Login/Register), BottomTabs for main (5 tabs: Inicio, Planes, Cotizar, Citas, Cuenta).
+- Install: `npm install --legacy-peer-deps` (Expo 54 + RN 0.81.5 + React 19 version conflicts).
+- `src/components/` and `src/assets/` are empty — create dirs as needed.
 
 ## API routes (all prefixed `/api`)
 
-- `auth/register`, `auth/login`, `auth/me` — JWT auth
-- `plans/` (filter `?type=health|auto|home|life|travel|student`), `plans/student`, `plans/:id`
-- `appointments/` — CRUD, user-scoped (auth required)
-- `quotes/` — POST to calculate premium (auth required)
-- `policies/` — GET/POST, `PUT /:id/cancel` (auth required)
+| Path | Auth | Notes |
+|------|------|-------|
+| `auth/register`, `auth/login`, `auth/me` | — | JWT (7d expiry, fallback secret `.env`) |
+| `plans/`, `plans/student`, `plans/:id` | No | `GET /plans?type=health\|auto\|home\|life\|travel\|student` |
+| `appointments/` | Yes | Full CRUD, scoped to user |
+| `quotes/` | Yes | POST to calculate premium (plan_type, coverage_amount, age) |
+| `policies/`, `policies/:id/cancel` | Yes | POST to buy, PUT to cancel |
+| `health` | No | `{ status: 'ok', service: 'Aseguradora API', version: '1.0.0' }` |
 
 ## Deployment
 
-- Backend on Railway: `backend/railway.json` configures Nixpacks, `postinstall` runs seed.
-- Web on Vercel: root dir `web`, env `VITE_API_URL=https://aseguropro-production.up.railway.app/api`
-- Mobile: local Expo Go or build via EAS.
+- Backend on Shiper (`backend/` base path): Node.js template, `PORT=3001`, start script `start`.
+- Web on Vercel: root dir `web`, env `VITE_API_URL=https://aseguropro.on.shiper.app/api`
+- Mobile: Expo Go or EAS build.
 
 ## Gotchas
 
-- **Port conflicts on Windows:** `Get-NetTCPConnection -LocalPort 3001 | Stop-Process -Id OwningProcess`
-- **No tests or typechecking configured** — only manual verification.
+- **No tests, lint, formatter, or typechecking** in any package — manual verification only.
+- **Seed wipes data** on every run (deletes all rows + resets autoincrement).
+- **Port conflicts (Windows):** `Get-NetTCPConnection -LocalPort 3001 | Stop-Process -Id OwningProcess`
 - **Expo SDK 54:** no `"main"` in `package.json`; Expo auto-detects `App.js`.
-- **favicon** is an inline SVG data URI in `web/index.html`.
+- **CORS** is wide open (`app.use(cors())` with no options).
+- **favicon** is inline SVG data URI in `web/index.html`.
