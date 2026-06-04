@@ -2,7 +2,7 @@ const initSqlJs = require('sql.js');
 const fs = require('fs');
 const path = require('path');
 
-const dbPath = path.join(__dirname, '..', 'aseguradora.db');
+const dbPath = path.join(__dirname, '..', 'velmacsafe.db');
 let db = null;
 
 function queryAll(sql, params = []) {

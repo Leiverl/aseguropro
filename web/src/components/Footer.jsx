@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="footer-section">
           <div className="footer-logo">
             <span className="nav-logo-icon">S</span>
-            SeguroPro
+            VelmacSafe
           </div>
           <p className="footer-desc">Protegemos lo que m&aacute;s te importa. M&aacute;s de 50,000 clientes conf&iacute;an en nosotros para cuidar su salud, auto, hogar, vida y estudios.</p>
         </div>
@@ -34,7 +34,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} SeguroPro. Todos los derechos reservados.</p>
+        <p>&copy; {new Date().getFullYear()} VelmacSafe. Todos los derechos reservados.</p>
       </div>
     </footer>
   )

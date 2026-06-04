@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const responses = [
-  { keywords: ['hola', 'buenas', 'buen', 'saludos', 'hey', 'qué tal'], response: '¡Hola! Soy el asistente virtual de SeguroPro. Estoy aquí para ayudarte con tus dudas sobre seguros. ¿En qué puedo ayudarte hoy?' },
+  { keywords: ['hola', 'buenas', 'buen', 'saludos', 'hey', 'qué tal'], response: '¡Hola! Soy el asistente virtual de VelmacSafe. Estoy aquí para ayudarte con tus dudas sobre seguros. ¿En qué puedo ayudarte hoy?' },
   { keywords: ['plan', 'seguro', 'producto', 'tipo', 'ofrece', 'ramo'], response: 'Ofrecemos 6 tipos de seguro:\n\n• Salud: cobertura médica desde $29.99/mes\n• Auto: protección vehicular desde $39.99/mes\n• Hogar: seguridad para tu casa desde $24.99/mes\n• Vida: protección familiar desde $19.99/mes\n• Viajes: asistencia en viajes desde $14.99/mes\n• Estudiantes: planes desde $9.99/mes\n\n¿Sobre cuál te gustaría saber más?' },
   { keywords: ['salud', 'médico', 'hospital', 'consulta', 'medicamento'], response: 'Nuestros planes de Salud incluyen:\n\n🏥 **Salud Esencial** - $29.99/mes\nConsultas ilimitadas, medicamentos genéricos, exámenes básicos.\n\n🏥 **Salud Premium** - $59.99/mes\nHospitalización, especialistas, cirugías, cobertura internacional.\n\nAmbos incluyen acceso a nuestra red de médicos.' },
   { keywords: ['auto', 'carro', 'vehículo', 'automóvil', 'coche'], response: 'Nuestros planes de Auto:\n\n🚗 **Auto Básico** - $39.99/mes\nDaños a terceros, responsabilidad civil, asistencia en carretera.\n\n🚗 **Auto Total** - $79.99/mes\nCobertura completa: robo, incendio, todo riesgo, cristales.\n\nAmbos incluyen asistencia 24/7.' },
@@ -15,9 +15,9 @@ const responses = [
   { keywords: ['cita', 'agendar', 'asesor', 'hablar', 'consultar', 'entrevista'], response: 'Podés agendar una cita con nuestros asesores expertos. Tenemos disponibles:\n\n• María García - Salud, Vida, Estudiantes\n• Carlos López - Salud, Auto\n• Ana Martínez - Estudiantes, Hogar\n• Roberto Díaz - Auto, Hogar, Viajes\n• Laura Sánchez - Vida, Salud, Viajes\n\n¿Te gustaría agendar una cita ahora?' },
   { keywords: ['contacto', 'teléfono', 'email', 'correo', 'llamar', 'dirección'], response: 'Podés contactarnos:\n\n📞 Teléfono: (555) 123-4567\n📧 Email: info@seguropro.com\n📍 Dirección: Av. Principal 123, Ciudad\n\nHorario de atención: Lun-Vie 9:00-18:00' },
   { keywords: ['horario', 'horas', 'abierto', 'atención', 'laboral'], response: 'Nuestro horario de atención es:\n\n• Lunes a Viernes: 9:00 - 18:00\n• Sábados: 9:00 - 13:00\n• Soporte telefónico 24/7 para emergencias' },
-  { keywords: ['gracias', 'graci', 'agradezco', 'muchas gracias'], response: '¡A ti por confiar en SeguroPro! Si tienes más dudas, aquí estoy para ayudarte. 😊' },
-  { keywords: ['adios', 'adiós', 'chao', 'bye', 'nos vemos', 'hasta luego'], response: '¡Hasta luego! Gracias por visitar SeguroPro. Que tengas un excelente día.' },
-  { keywords: ['empresa', 'compañía', 'seguropro', 'sobre', 'quienes', 'historia'], response: 'SeguroPro es una compañía líder en seguros con más de 50,000 clientes satisfechos. Ofrecemos soluciones de protección para salud, auto, hogar, vida, viajes y estudiantes. Nuestra tasa de aprobación del 98% nos respalda.' },
+  { keywords: ['gracias', 'graci', 'agradezco', 'muchas gracias'], response: '¡A ti por confiar en VelmacSafe! Si tienes más dudas, aquí estoy para ayudarte. 😊' },
+  { keywords: ['adios', 'adiós', 'chao', 'bye', 'nos vemos', 'hasta luego'], response: '¡Hasta luego! Gracias por visitar VelmacSafe. Que tengas un excelente día.' },
+  { keywords: ['empresa', 'compañía', 'seguropro', 'sobre', 'quienes', 'historia'], response: 'VelmacSafe es una compañía líder en seguros con más de 50,000 clientes satisfechos. Ofrecemos soluciones de protección para salud, auto, hogar, vida, viajes y estudiantes. Nuestra tasa de aprobación del 98% nos respalda.' },
   { keywords: ['contratar', 'comprar', 'adquirir', 'registrar', 'registrarme', 'registración'], response: 'Contratar es muy sencillo:\n\n1. Creá una cuenta gratuita\n2. Elegí el plan que necesites\n3 Completá tus datos\n4. ¡Listo! Tu cobertura comienza de inmediato\n\n¿Te gustaría crear una cuenta ahora?' },
   { keywords: ['cancelar', 'cancelación', 'baja', 'dar de baja'], response: 'Para cancelar una póliza o cita, podés hacerlo desde tu panel de control en "Mis Pólizas" o "Mis Citas". Si necesitás ayuda, contactanos al (555) 123-4567.' },
 ]
@@ -45,7 +45,7 @@ function formatMessage(text) {
 export default function Chatbot() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([
-    { type: 'bot', text: '¡Hola! Soy el asistente de SeguroPro. ¿En qué puedo ayudarte?' }
+    { type: 'bot', text: '¡Hola! Soy el asistente de VelmacSafe. ¿En qué puedo ayudarte?' }
   ])
   const [input, setInput] = useState('')
   const endRef = useRef(null)
@@ -90,7 +90,7 @@ export default function Chatbot() {
           <div className="chatbot-header-info">
             <div className="chatbot-avatar">S</div>
             <div>
-              <div className="chatbot-name">Asistente SeguroPro</div>
+              <div className="chatbot-name">Asistente VelmacSafe</div>
               <div className="chatbot-status">En l\u00ednea</div>
             </div>
           </div>

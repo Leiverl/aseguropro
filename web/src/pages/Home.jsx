@@ -22,8 +22,8 @@ export default function Home() {
   }, [])
 
   const testimonials = [
-    { text: 'SeguroPro me dio la tranquilidad que necesitaba. Su servicio al cliente es excepcional y el proceso de contrataci&oacute;n fue muy sencillo.', name: 'Roberto M&eacute;ndez', plan: 'Seguro de Salud' },
-    { text: 'Como estudiante, encontrar un seguro accesible era dif&iacute;cil hasta que conoc&iacute; SeguroPro. altamente recomendado.', name: 'Laura Castillo', plan: 'Seguro Estudiantil' },
+    { text: 'VelmacSafe me dio la tranquilidad que necesitaba. Su servicio al cliente es excepcional y el proceso de contrataci&oacute;n fue muy sencillo.', name: 'Roberto M&eacute;ndez', plan: 'Seguro de Salud' },
+    { text: 'Como estudiante, encontrar un seguro accesible era dif&iacute;cil hasta que conoc&iacute; VelmacSafe. altamente recomendado.', name: 'Laura Castillo', plan: 'Seguro Estudiantil' },
     { text: 'Contratar una p&oacute;liza fue muy f&aacute;cil. En minutos ten&iacute;a mi seguro activo y el soporte ha sido excelente.', name: 'Pedro Ram&iacute;rez', plan: 'Seguro de Auto' },
   ]
 

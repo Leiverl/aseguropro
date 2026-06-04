@@ -27,7 +27,7 @@ export default function Navbar() {
       <div className="nav-container">
         <Link to="/" className="nav-logo">
           <span className="nav-logo-icon"><Icon name="shield" size={18} /></span>
-          SeguroPro
+          VelmacSafe
         </Link>
 
         <div className="nav-center">

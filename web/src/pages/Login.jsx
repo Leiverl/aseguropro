@@ -30,7 +30,7 @@ export default function Login() {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Iniciar Sesi&oacute;n</h2>
-          <p>Ingresa a tu cuenta de SeguroPro</p>
+          <p>Ingresa a tu cuenta de VelmacSafe</p>
         </div>
 
         <form onSubmit={handleSubmit}>

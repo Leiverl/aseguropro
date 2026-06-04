@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { queryOne } = require('../database');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'aseguradora-secret-key-2024';
+const JWT_SECRET = process.env.JWT_SECRET || 'velmacsafe-secret-key-2024';
 
 function auth(req, res, next) {
   const header = req.headers.authorization;

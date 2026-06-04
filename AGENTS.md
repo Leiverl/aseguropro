@@ -1,4 +1,4 @@
-# SeguroPro — AGENTS.md
+# VelmacSafe — AGENTS.md
 
 ## Launch
 
@@ -19,7 +19,7 @@ cd mobile  && npx expo start   # Expo Go (QR for phone)
 
 ## Database
 
-- **sql.js**, not better-sqlite3. File at `backend/aseguradora.db` (gitignored, auto-created by seed).
+- **sql.js**, not better-sqlite3. File at `backend/velmacsafe.db` (gitignored, auto-created by seed).
 - Wrapper `backend/src/database.js`: `queryAll(sql, params)`, `queryOne(sql, params)`, `execute(sql, params)` → `{ changes, lastInsertRowid }`, `execRaw(sql)` for DDL.
 - **Writes auto-persist** via `saveDb()`. If using `db.exec()` directly, call `saveDb()` after.
 - `initDb()` must resolve before routes — done at top of `index.js`.
@@ -36,7 +36,7 @@ cd mobile  && npx expo start   # Expo Go (QR for phone)
 
 ## Mobile
 
-- API **hardcoded** to `https://aseguropro-production.up.railway.app/api` in `src/services/api.js` — no local dev fallback.
+- API **hardcoded** to `https://avelmacsafe-production.up.railway.app/api` in `src/services/api.js` — no local dev fallback.
 - Theme: `ThemeContext` + `AsyncStorage`. **Defaults to dark**. Toggle in Dashboard.
 - Navigation: Stack for auth (Login/Register), BottomTabs for main (Inicio, Planes, Cotizar, Citas, Cuenta).
 - Install: `npm install --legacy-peer-deps` (React 19 + Expo 54 version conflicts).
@@ -47,7 +47,7 @@ cd mobile  && npx expo start   # Expo Go (QR for phone)
 
 | Path | Auth | Notes |
 |------|------|-------|
-| `auth/register`, `auth/login`, `auth/me` | No | JWT (7d expiry, fallback secret `aseguradora-secret-key-2024`) |
+| `auth/register`, `auth/login`, `auth/me` | No | JWT (7d expiry, fallback secret `velmacsafe-secret-key-2024`) |
 | `plans/`, `plans/student`, `plans/:id` | No | `GET /plans?type=health\|auto\|home\|life\|travel\|student` |
 | `appointments/` | Yes | Full CRUD, scoped to user |
 | `quotes/` | Yes | POST (plan_type, coverage_amount, age) |
@@ -57,7 +57,7 @@ cd mobile  && npx expo start   # Expo Go (QR for phone)
 ## Deployment
 
 - Backend on Railway: root `backend/`, uses `railway.json` (Nixpacks), healthcheck `GET /api/plans`. Env vars set in Railway dashboard (`PORT`, `JWT_SECRET`). `.env` is gitignored; `.env.example` committed as template.
-- Web on Vercel: root `web`, env `VITE_API_URL=https://aseguropro-production.up.railway.app/api`
+- Web on Vercel: root `web`, env `VITE_API_URL=https://avelmacsafe-production.up.railway.app/api`
 - Mobile: Expo Go or EAS build.
 
 ## Gotchas

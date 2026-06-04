@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 const { required } = require('../middleware/validate');
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'aseguradora-secret-key-2024';
+const JWT_SECRET = process.env.JWT_SECRET || 'velmacsafe-secret-key-2024';
 
 router.post('/register', required('name', 'email', 'password'), (req, res) => {
   try {

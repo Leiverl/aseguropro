@@ -31,7 +31,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <KeyboardAvoidingView style={s.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={s.content}>
-        <Text style={s.title}>SeguroPro</Text>
+        <Text style={s.title}>VelmacSafe</Text>
         <Text style={s.subtitle}>Tu seguridad, nuestra prioridad</Text>
 
         <View style={[s.card, { borderColor: colors.border }]}>

@@ -30,7 +30,7 @@ export default function Register() {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Crear Cuenta</h2>
-          <p>&Uacute;nete a SeguroPro y protege lo que m&aacute;s te importa</p>
+          <p>&Uacute;nete a VelmacSafe y protege lo que m&aacute;s te importa</p>
         </div>
 
         <form onSubmit={handleSubmit}>

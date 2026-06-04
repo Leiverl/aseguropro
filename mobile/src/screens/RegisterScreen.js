@@ -33,7 +33,7 @@ export default function RegisterScreen({ navigation }) {
     <KeyboardAvoidingView style={s.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={s.content}>
         <Text style={s.title}>Crear Cuenta</Text>
-        <Text style={s.subtitle}>&Uacute;nete a SeguroPro</Text>
+        <Text style={s.subtitle}>&Uacute;nete a VelmacSafe</Text>
 
         <View style={[s.card, { borderColor: colors.border }]}>
           <TextInput
