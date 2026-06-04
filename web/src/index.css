@@ -45,11 +45,13 @@
   --radius: 8px;
   --radius-sm: 6px;
   --radius-xs: 4px;
-  --transition: all 0.2s ease;
-  --transition-slow: all 0.3s ease;
+  --transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+  --transition-slow: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -58,6 +60,8 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
+
+button, a, input, select, textarea { touch-action: manipulation; }
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -101,6 +105,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   color: var(--text);
   letter-spacing: -0.02em;
   line-height: 1.2;
+  text-wrap: balance;
 }
 
 .section-header p {
@@ -394,6 +399,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   line-height: 1.1;
   margin-bottom: 20px;
   letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 .hero p {
@@ -430,6 +436,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   color: var(--text);
   margin-bottom: 4px;
   letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .hero-stat span {
@@ -548,6 +555,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   color: var(--primary);
   margin-bottom: 16px;
   letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .plan-card-price span {
@@ -841,6 +849,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   font-weight: 800;
   margin-bottom: 12px;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .page-header p {
@@ -932,6 +941,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   color: var(--primary);
   margin-bottom: 20px;
   letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .plan-price-big span {
@@ -1075,6 +1085,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   font-weight: 800;
   color: var(--accent);
   letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .comparison-price span {
@@ -1279,7 +1290,11 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   appearance: none;
   background: var(--border);
   border-radius: 3px;
-  outline: none;
+}
+
+.coverage-slider input[type="range"]:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
 }
 
 .coverage-slider input[type="range"]::-webkit-slider-thumb {
@@ -1577,7 +1592,7 @@ select.form-input {
   padding: 24px;
 }
 
-.stat-value { font-size: 2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
+.stat-value { font-size: 2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 .stat-label { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
 
 .dashboard-grid {
@@ -1757,6 +1772,16 @@ select.form-input {
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .spinner { animation: none; }
+}
+
 /* Advisors grid */
 .advisors-grid {
   display: grid;
@@ -1831,7 +1856,7 @@ select.form-input {
   opacity: 0;
   transform: translateY(12px) scale(0.96);
   pointer-events: none;
-  transition: all 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
   overflow: hidden;
 }
 

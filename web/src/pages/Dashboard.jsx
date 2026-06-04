@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
 
+const fmtPrice = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 })
+const fmtDate = new Intl.DateTimeFormat('es-MX', { year: 'numeric', month: 'short', day: 'numeric' })
+
 export default function Dashboard() {
   const { user } = useAuth()
   const [policies, setPolicies] = useState([])
@@ -65,13 +68,13 @@ export default function Dashboard() {
                     <h3>{p.plan_name}</h3>
                     <span className="policy-type">{p.plan_type}</span>
                     <div className="policy-dates">
-                      <span>Desde: {p.start_date}</span>
-                      <span>Hasta: {p.end_date}</span>
+                      <span>Desde: {p.start_date ? fmtDate.format(new Date(p.start_date)) : '—'}</span>
+                      <span>Hasta: {p.end_date ? fmtDate.format(new Date(p.end_date)) : '—'}</span>
                     </div>
                   </div>
                   <div className="policy-status">
                     <span className={`status-badge ${p.status}`}>{p.status === 'active' ? 'Activa' : p.status}</span>
-                    <span className="policy-price">${p.price}/mes</span>
+                    <span className="policy-price">{fmtPrice.format(p.price)}/mes</span>
                   </div>
                 </div>
               ))}
@@ -100,7 +103,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="apt-details">
-                    <span>{apt.date}</span>
+                    <span>{apt.date ? fmtDate.format(new Date(apt.date)) : apt.date}</span>
                     <span>{apt.time}</span>
                   </div>
                 </div>

@@ -38,14 +38,14 @@ export default function Navbar() {
         </div>
 
         <div className="nav-right">
-          <button className="theme-toggle" onClick={toggleTheme} title="Cambiar tema">
+          <button className="theme-toggle" onClick={toggleTheme} aria-label="Cambiar tema">
             {theme === 'dark' ? <>&#9728;</> : <>&#9790;</>}
           </button>
 
           <div className="nav-desktop-auth">
             {user ? (
               <div className="nav-user-menu">
-                <Link to="/dashboard" className="nav-link">
+                <Link to="/dashboard" className="nav-link" aria-label="Mi cuenta">
                   <span className="user-avatar">{user.name[0]}</span>
                 </Link>
                 <button className="btn btn-outline btn-sm" onClick={handleLogout}>Salir</button>
@@ -58,7 +58,7 @@ export default function Navbar() {
             )}
           </div>
 
-          <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+          <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen}>
             {menuOpen ? <>&#10005;</> : <>&#9776;</>}
           </button>
         </div>

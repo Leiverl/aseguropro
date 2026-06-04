@@ -81,7 +81,7 @@ export default function Chatbot() {
 
   return (
     <>
-      <button className={`chatbot-toggle ${open ? 'open' : ''}`} onClick={() => setOpen(!open)}>
+      <button className={`chatbot-toggle ${open ? 'open' : ''}`} onClick={() => setOpen(!open)} aria-label={open ? 'Cerrar chat' : 'Abrir chat'}>
         {open ? '\u2715' : '\uD83D\uDCAC'}
       </button>
 
@@ -96,7 +96,7 @@ export default function Chatbot() {
           </div>
         </div>
 
-        <div className="chatbot-messages">
+        <div className="chatbot-messages" role="log" aria-live="polite" aria-label="Mensajes del chat">
           {messages.map((msg, i) => (
             <div key={i} className={`chat-msg ${msg.type === 'user' ? 'user' : 'bot'}`}>
               <div className="chat-bubble">
@@ -117,7 +117,7 @@ export default function Chatbot() {
             rows={1}
             className="chat-input-field"
           />
-          <button className="chat-send-btn" onClick={handleSend} disabled={!input.trim()}>
+          <button className="chat-send-btn" onClick={handleSend} disabled={!input.trim()} aria-label="Enviar mensaje">
             {'\u27A4'}
           </button>
         </div>

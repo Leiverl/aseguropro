@@ -112,10 +112,13 @@ export default function Quote() {
               value={form.age}
               onChange={(e) => setForm({ ...form, age: parseInt(e.target.value) || 0 })}
               className="form-input"
+              autoComplete="off"
+              inputMode="numeric"
+              spellCheck={false}
             />
           </div>
 
-          {error && <div className="form-error">{error}</div>}
+          {error && <div className="form-error" role="alert">{error}</div>}
 
           <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
             {loading ? 'Calculando...' : 'Calcular Cotizaci&oacute;n'}

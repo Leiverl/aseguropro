@@ -40,6 +40,8 @@ export default function Login() {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="form-input"
               placeholder="tu@email.com"
+              autoComplete="email"
+              spellCheck={false}
               required
             />
           </div>
@@ -51,7 +53,9 @@ export default function Login() {
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="form-input"
-              placeholder="Ingresa tu contrase&ntilde;a"
+              placeholder="Ingresa tu contraseña"
+              autoComplete="current-password"
+              spellCheck={false}
               required
             />
           </div>

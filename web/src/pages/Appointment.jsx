@@ -3,6 +3,8 @@ import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
+const fmtDate = new Intl.DateTimeFormat('es-MX', { year: 'numeric', month: 'short', day: 'numeric' })
+
 const advisors = [
   { name: 'Mar&iacute;a Garc&iacute;a', role: 'Asesora Senior', specialties: 'Salud, Vida, Estudiantes' },
   { name: 'Carlos L&oacute;pez', role: 'Especialista en Salud', specialties: 'Salud, Auto' },
@@ -75,6 +77,8 @@ export default function Appointment() {
               value={form.advisor_name}
               onChange={(e) => setForm({ ...form, advisor_name: e.target.value })}
               className="form-input"
+              name="advisor_name"
+              autoComplete="off"
               required
             >
               <option value="">-- Selecciona un asesor --</option>
@@ -95,14 +99,15 @@ export default function Appointment() {
           <div className="form-row">
             <div className="form-group">
               <label>Fecha</label>
-              <input
-                type="date"
-                value={form.date}
-                min={minDate}
-                onChange={(e) => setForm({ ...form, date: e.target.value })}
-                className="form-input"
-                required
-              />
+                <input
+                  type="date"
+                  value={form.date}
+                  min={minDate}
+                  onChange={(e) => setForm({ ...form, date: e.target.value })}
+                  className="form-input"
+                  autoComplete="off"
+                  required
+                />
             </div>
             <div className="form-group">
               <label>Hora</label>
@@ -110,6 +115,8 @@ export default function Appointment() {
                 value={form.time}
                 onChange={(e) => setForm({ ...form, time: e.target.value })}
                 className="form-input"
+                name="time"
+                autoComplete="off"
                 required
               >
                 <option value="">-- Selecciona --</option>
@@ -126,13 +133,14 @@ export default function Appointment() {
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               className="form-input form-textarea"
-              placeholder="Cu&eacute;ntanos qu&eacute; tipo de seguro te interesa..."
+              placeholder="Cuéntanos qué tipo de seguro te interesa..."
               rows={3}
+              spellCheck={true}
             />
           </div>
 
-          {error && <div className="form-error">{error}</div>}
-          {success && <div className="form-success">{success}</div>}
+          {error && <div className="form-error" role="alert">{error}</div>}
+          {success && <div className="form-success" role="status">{success}</div>}
 
           <button type="submit" className="btn btn-primary btn-lg">Agendar Cita</button>
         </form>
@@ -156,7 +164,7 @@ export default function Appointment() {
                     </span>
                   </div>
                   <div className="apt-details">
-                    <span>{apt.date}</span>
+                    <span>{apt.date ? fmtDate.format(new Date(apt.date)) : apt.date}</span>
                     <span>{apt.time}</span>
                   </div>
                   {apt.notes && <p className="apt-notes">{apt.notes}</p>}

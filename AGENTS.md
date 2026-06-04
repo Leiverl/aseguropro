@@ -3,71 +3,67 @@
 ## Launch
 
 ```bash
-cd backend && npm start           # Express on :3001 (start first)
-cd backend && npm run dev         # same but with node --watch (Node 18+)
-cd web     && npm run dev         # Vite on :5173, proxies /api -> :3001
-cd mobile  && npx expo start      # Expo Go (QR for phone)
+cd backend && npm start        # Express :3001 (start first)
+cd backend && npm run dev      # node --watch on :3001
+cd web     && npm run dev      # Vite :5173, proxies /api -> :3001
+cd mobile  && npx expo start   # Expo Go (QR for phone)
 ```
 
-## Project structure
+## Layout
 
-| Dir | Tech | Entrypoint |
-|-----|------|------------|
-| `backend/` | Express + **sql.js** (pure JS SQLite, not better-sqlite3) | `src/index.js` |
+| Dir | Stack | Entrypoint |
+|-----|-------|------------|
+| `backend/` | Express + **sql.js** (pure JS SQLite) | `src/index.js` |
 | `web/` | React 18 + Vite + react-router-dom v6 | `src/main.jsx` |
 | `mobile/` | RN 0.81.5 + Expo SDK 54 + @react-navigation v7 | `App.js` |
 
-## Database (`sql.js`)
+## Database
 
-- File: `backend/aseguradora.db` (gitignored, auto-created by seed/postinstall)
-- Wrapper in `backend/src/database.js`:
-  - `queryAll(sql, params)` → array of rows
-  - `queryOne(sql, params)` → single row or null
-  - `execute(sql, params)` → `{ changes, lastInsertRowid }` (calls `saveDb()`)
-  - `execRaw(sql)` → for schema DDL (calls `saveDb()`)
-  - `initDb()` must resolve before requests hit routes (done at top of `index.js`)
-- **Writes auto-persist** via `saveDb()`. If using raw `db.exec()`, call `saveDb()` after.
-- **Seed is destructive** — re-running deletes all existing data first. Runs via `postinstall` or manually: `cd backend && npm run seed`.
-- Demo: `demo@email.com` / `demo123` — 12 plans (6 types × 2 each).
-- **Ephemeral storage**: Railway filesystem is not persistent. The `.db` file is lost on restart/redeploy. Seed re-runs on deploy so demo data is always fresh, but any user registrations, appointments, etc. are reset. For real persistence, migrate to PostgreSQL.
+- **sql.js**, not better-sqlite3. File at `backend/aseguradora.db` (gitignored, auto-created by seed).
+- Wrapper `backend/src/database.js`: `queryAll(sql, params)`, `queryOne(sql, params)`, `execute(sql, params)` → `{ changes, lastInsertRowid }`, `execRaw(sql)` for DDL.
+- **Writes auto-persist** via `saveDb()`. If using `db.exec()` directly, call `saveDb()` after.
+- `initDb()` must resolve before routes — done at top of `index.js`.
+- **Seed is destructive**: wipes all rows + resets autoincrement. Runs via `postinstall` or `cd backend && npm run seed`.
+- Demo: `demo@email.com` / `demo123` — 12 plans (6 types × 2).
+- Railway filesystem is ephemeral. DB lost on restart/redeploy; seed re-runs on deploy so demo data is fresh but user data resets.
 
 ## Web
 
 - Vite proxy `/api` → `:3001` in dev. Prod uses `VITE_API_URL` env var.
-- API client at `src/api.js` — bare `fetch` wrapper, no axios. JWT in `localStorage`, `Authorization: Bearer` header.
-- Theme: `[data-theme]` on `<html>` + CSS vars, persisted in `localStorage`. Toggle in Navbar.
-- Chatbot at `src/components/Chatbot.jsx` — client-side keyword matching, no backend.
+- API client `src/api.js` — bare `fetch`, JWT in `localStorage`, `Authorization: Bearer` header.
+- Theme: `[data-theme]` on `<html>` + CSS vars, persisted in `localStorage`.
+- Chatbot `src/components/Chatbot.jsx` — client-side keyword matching, no backend.
 
 ## Mobile
 
-- API hardcoded to Railway URL in `src/services/api.js` — no local dev fallback.
-- Theme: `ThemeContext` + `AsyncStorage` persistence. **Defaults to dark**. Toggle in Dashboard.
-- Navigation: Stack for auth flow (Login/Register), BottomTabs for main (5 tabs: Inicio, Planes, Cotizar, Citas, Cuenta).
-- Install: `npm install --legacy-peer-deps` (Expo 54 + RN 0.81.5 + React 19 version conflicts).
+- API **hardcoded** to `https://aseguropro-production.up.railway.app/api` in `src/services/api.js` — no local dev fallback.
+- Theme: `ThemeContext` + `AsyncStorage`. **Defaults to dark**. Toggle in Dashboard.
+- Navigation: Stack for auth (Login/Register), BottomTabs for main (Inicio, Planes, Cotizar, Citas, Cuenta).
+- Install: `npm install --legacy-peer-deps` (React 19 + Expo 54 version conflicts).
 - `src/components/` and `src/assets/` are empty — create dirs as needed.
+- **Mobile API missing `updateAppointment`** (PUT) — web has it, mobile `api.js` only has create and delete.
 
-## API routes (all prefixed `/api`)
+## API routes (prefix `/api`)
 
 | Path | Auth | Notes |
 |------|------|-------|
-| `auth/register`, `auth/login`, `auth/me` | — | JWT (7d expiry, fallback secret `.env`) |
+| `auth/register`, `auth/login`, `auth/me` | No | JWT (7d expiry, fallback secret `aseguradora-secret-key-2024`) |
 | `plans/`, `plans/student`, `plans/:id` | No | `GET /plans?type=health\|auto\|home\|life\|travel\|student` |
 | `appointments/` | Yes | Full CRUD, scoped to user |
-| `quotes/` | Yes | POST to calculate premium (plan_type, coverage_amount, age) |
+| `quotes/` | Yes | POST (plan_type, coverage_amount, age) |
 | `policies/`, `policies/:id/cancel` | Yes | POST to buy, PUT to cancel |
-| `health` | No | `{ status: 'ok', service: 'Aseguradora API', version: '1.0.0' }` |
+| `health` | No | `{ status: 'ok' }` |
 
 ## Deployment
 
-- Backend on Railway: root dir `backend/`, uses `railway.json` (Nixpacks builder), healthcheck `GET /api/plans`. Env vars set in Railway dashboard (`PORT`, `JWT_SECRET`). `.env` is gitignored.
-- Web on Vercel: root dir `web`, env `VITE_API_URL=https://aseguropro-production.up.railway.app/api`
+- Backend on Railway: root `backend/`, uses `railway.json` (Nixpacks), healthcheck `GET /api/plans`. Env vars set in Railway dashboard (`PORT`, `JWT_SECRET`). `.env` is gitignored; **no `.env.example`** committed.
+- Web on Vercel: root `web`, env `VITE_API_URL=https://aseguropro-production.up.railway.app/api`
 - Mobile: Expo Go or EAS build.
 
 ## Gotchas
 
-- **No tests, lint, formatter, or typechecking** in any package — manual verification only.
-- **Seed wipes data** on every run (deletes all rows + resets autoincrement).
+- **No tests, lint, formatter, or typecheck** in any package — manual verification only.
 - **Port conflicts (Windows):** `Get-NetTCPConnection -LocalPort 3001 | Stop-Process -Id OwningProcess`
 - **Expo SDK 54:** no `"main"` in `package.json`; Expo auto-detects `App.js`.
-- **CORS** is wide open (`app.use(cors())` no options). If deploying on a platform that strips CORS headers (e.g. Shiper), use explicit `cors({ origin: true, credentials: true, methods: [...], allowedHeaders: [...] })`.
+- **CORS** wide open (`cors()` with no options). On platforms that strip CORS headers (e.g. Shiper), use explicit config.
 - **favicon** is inline SVG data URI in `web/index.html`.

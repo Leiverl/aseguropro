@@ -39,7 +39,8 @@ export default function Register() {
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="form-input"
-              placeholder="Juan P&eacute;rez"
+              placeholder="Juan Pérez"
+              autoComplete="name"
               required
             />
           </div>
@@ -52,6 +53,8 @@ export default function Register() {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="form-input"
               placeholder="tu@email.com"
+              autoComplete="email"
+              spellCheck={false}
               required
             />
           </div>
@@ -64,6 +67,7 @@ export default function Register() {
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               className="form-input"
               placeholder="555-0100"
+              autoComplete="tel"
             />
           </div>
 
@@ -74,7 +78,9 @@ export default function Register() {
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="form-input"
-              placeholder="M&iacute;nimo 6 caracteres"
+              placeholder="Mínimo 6 caracteres"
+              autoComplete="new-password"
+              spellCheck={false}
               minLength={6}
               required
             />

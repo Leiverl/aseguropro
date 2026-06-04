@@ -34,7 +34,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2026 SeguroPro. Todos los derechos reservados.</p>
+        <p>&copy; {new Date().getFullYear()} SeguroPro. Todos los derechos reservados.</p>
       </div>
     </footer>
   )
