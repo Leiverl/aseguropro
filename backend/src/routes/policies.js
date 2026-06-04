@@ -1,6 +1,7 @@
 const express = require('express');
 const { queryAll, queryOne, execute } = require('../database');
 const auth = require('../middleware/auth');
+const { required } = require('../middleware/validate');
 
 const router = express.Router();
 
@@ -22,13 +23,9 @@ router.get('/', auth, (req, res) => {
   }
 });
 
-router.post('/', auth, (req, res) => {
+router.post('/', auth, required('plan_id', 'start_date', 'end_date'), (req, res) => {
   try {
     const { plan_id, start_date, end_date } = req.body;
-
-    if (!plan_id || !start_date || !end_date) {
-      return res.status(400).json({ error: 'Plan, fecha inicio y fecha fin son requeridos' });
-    }
 
     const plan = queryOne('SELECT * FROM plans WHERE id = ?', [plan_id]);
     if (!plan) {

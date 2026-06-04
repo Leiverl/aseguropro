@@ -1,16 +1,13 @@
 const express = require('express');
 const { execute } = require('../database');
 const auth = require('../middleware/auth');
+const { required } = require('../middleware/validate');
 
 const router = express.Router();
 
-router.post('/', auth, (req, res) => {
+router.post('/', auth, required('plan_type', 'coverage_amount', 'age'), (req, res) => {
   try {
     const { plan_type, coverage_amount, age } = req.body;
-
-    if (!plan_type || !coverage_amount || !age) {
-      return res.status(400).json({ error: 'Tipo de plan, monto de cobertura y edad son requeridos' });
-    }
 
     const amount = parseFloat(coverage_amount);
     const userAge = parseInt(age);

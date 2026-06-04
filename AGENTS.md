@@ -56,13 +56,17 @@ cd mobile  && npx expo start   # Expo Go (QR for phone)
 
 ## Deployment
 
-- Backend on Railway: root `backend/`, uses `railway.json` (Nixpacks), healthcheck `GET /api/plans`. Env vars set in Railway dashboard (`PORT`, `JWT_SECRET`). `.env` is gitignored; **no `.env.example`** committed.
+- Backend on Railway: root `backend/`, uses `railway.json` (Nixpacks), healthcheck `GET /api/plans`. Env vars set in Railway dashboard (`PORT`, `JWT_SECRET`). `.env` is gitignored; `.env.example` committed as template.
 - Web on Vercel: root `web`, env `VITE_API_URL=https://aseguropro-production.up.railway.app/api`
 - Mobile: Expo Go or EAS build.
 
 ## Gotchas
 
-- **No tests, lint, formatter, or typecheck** in any package — manual verification only.
+- **No tests or typecheck** — manual verification only.
+- **Prettier** at root (`.prettierrc`), **EditorConfig** (`.editorconfig`).
+- **Backend validation** via `middleware/validate.js` (`required(...fields)` middleware).
+- **CI** at `.github/workflows/ci.yml` — runs `npm ci` + build on push/PR.
+- **Redeploy**: Railway deploys `backend/` on push; Vercel deploys `web/` on push.
 - **Port conflicts (Windows):** `Get-NetTCPConnection -LocalPort 3001 | Stop-Process -Id OwningProcess`
 - **Expo SDK 54:** no `"main"` in `package.json`; Expo auto-detects `App.js`.
 - **CORS** wide open (`cors()` with no options). On platforms that strip CORS headers (e.g. Shiper), use explicit config.

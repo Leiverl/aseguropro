@@ -3,17 +3,14 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { queryOne, execute } = require('../database');
 const auth = require('../middleware/auth');
+const { required } = require('../middleware/validate');
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'aseguradora-secret-key-2024';
 
-router.post('/register', (req, res) => {
+router.post('/register', required('name', 'email', 'password'), (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
-
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: 'Nombre, email y contraseña son requeridos' });
-    }
 
     const existing = queryOne('SELECT id FROM users WHERE email = ?', [email]);
     if (existing) {
@@ -33,13 +30,9 @@ router.post('/register', (req, res) => {
   }
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', required('email', 'password'), (req, res) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email y contraseña son requeridos' });
-    }
 
     const user = queryOne('SELECT * FROM users WHERE email = ?', [email]);
     if (!user) {

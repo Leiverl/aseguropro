@@ -25,6 +25,10 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'Aseguradora API', version: '1.0.0' });
 });
 
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: 'Ruta no encontrada' });
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Error interno del servidor' });

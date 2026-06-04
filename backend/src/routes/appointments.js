@@ -1,6 +1,7 @@
 const express = require('express');
 const { queryAll, queryOne, execute } = require('../database');
 const auth = require('../middleware/auth');
+const { required } = require('../middleware/validate');
 
 const router = express.Router();
 
@@ -17,13 +18,9 @@ router.get('/', auth, (req, res) => {
   }
 });
 
-router.post('/', auth, (req, res) => {
+router.post('/', auth, required('advisor_name', 'date', 'time'), (req, res) => {
   try {
     const { advisor_name, date, time, notes } = req.body;
-
-    if (!advisor_name || !date || !time) {
-      return res.status(400).json({ error: 'Asesor, fecha y hora son requeridos' });
-    }
 
     const result = execute(
       'INSERT INTO appointments (user_id, advisor_name, date, time, notes) VALUES (?, ?, ?, ?, ?)',
