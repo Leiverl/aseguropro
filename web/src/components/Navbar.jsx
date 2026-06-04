@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
+import { Icon } from './Icon'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
@@ -25,7 +26,7 @@ export default function Navbar() {
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
         <Link to="/" className="nav-logo">
-          <span className="nav-logo-icon">S</span>
+          <span className="nav-logo-icon"><Icon name="shield" size={18} /></span>
           SeguroPro
         </Link>
 
@@ -39,7 +40,7 @@ export default function Navbar() {
 
         <div className="nav-right">
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Cambiar tema">
-            {theme === 'dark' ? <>&#9728;</> : <>&#9790;</>}
+            <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
           </button>
 
           <div className="nav-desktop-auth">
@@ -59,7 +60,7 @@ export default function Navbar() {
           </div>
 
           <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen}>
-            {menuOpen ? <>&#10005;</> : <>&#9776;</>}
+            <Icon name={menuOpen ? 'close' : 'menu'} size={20} />
           </button>
         </div>
       </div>

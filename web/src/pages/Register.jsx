@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { Icon } from '../components/Icon'
 
 export default function Register() {
   const { register } = useAuth()
@@ -8,6 +9,7 @@ export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', phone: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -73,20 +75,30 @@ export default function Register() {
 
           <div className="form-group">
             <label>Contrase&ntilde;a</label>
-            <input
-              type="password"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="form-input"
-              placeholder="Mínimo 6 caracteres"
-              autoComplete="new-password"
-              spellCheck={false}
-              minLength={6}
-              required
-            />
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                className="form-input"
+                placeholder="Mínimo 6 caracteres"
+                autoComplete="new-password"
+                spellCheck={false}
+                minLength={6}
+                required
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              >
+                <Icon name={showPassword ? 'eyeOff' : 'eye'} size={18} />
+              </button>
+            </div>
           </div>
 
-          {error && <div className="form-error">{error}</div>}
+          {error && <div className="form-error" role="alert">{error}</div>}
 
           <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
             {loading ? 'Creando cuenta...' : 'Crear Cuenta'}

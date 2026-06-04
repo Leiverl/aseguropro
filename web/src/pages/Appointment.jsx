@@ -2,15 +2,18 @@ import { useState, useEffect } from 'react'
 import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from '../components/Toast'
+import { Icon } from '../components/Icon'
+import ConfirmDialog from '../components/ConfirmDialog'
 
 const fmtDate = new Intl.DateTimeFormat('es-MX', { year: 'numeric', month: 'short', day: 'numeric' })
 
 const advisors = [
-  { name: 'Mar&iacute;a Garc&iacute;a', role: 'Asesora Senior', specialties: 'Salud, Vida, Estudiantes' },
-  { name: 'Carlos L&oacute;pez', role: 'Especialista en Salud', specialties: 'Salud, Auto' },
-  { name: 'Ana Mart&iacute;nez', role: 'Asesora Estudiantil', specialties: 'Estudiantes, Hogar' },
-  { name: 'Roberto D&iacute;az', role: 'Asesor Multi-ramo', specialties: 'Auto, Hogar, Viajes' },
-  { name: 'Laura S&aacute;nchez', role: 'Asesora de Vida', specialties: 'Vida, Salud, Viajes' },
+  { name: 'Mar\xeda Garc\xeda', role: 'Asesora Senior', specialties: 'Salud, Vida, Estudiantes' },
+  { name: 'Carlos L\xf3pez', role: 'Especialista en Salud', specialties: 'Salud, Auto' },
+  { name: 'Ana Mart\xednez', role: 'Asesora Estudiantil', specialties: 'Estudiantes, Hogar' },
+  { name: 'Roberto D\xedaz', role: 'Asesor Multi-ramo', specialties: 'Auto, Hogar, Viajes' },
+  { name: 'Laura S\xe1nchez', role: 'Asesora de Vida', specialties: 'Vida, Salud, Viajes' },
 ]
 
 const timeSlots = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30']
@@ -18,11 +21,13 @@ const timeSlots = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00'
 export default function Appointment() {
   const { user } = useAuth()
   const navigate = useNavigate()
+  const { addToast } = useToast()
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
   const [form, setForm] = useState({ advisor_name: '', date: '', time: '', notes: '' })
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
+  const [deleteTarget, setDeleteTarget] = useState(null)
 
   const fetchAppointments = () => {
     if (!user) return
@@ -44,19 +49,24 @@ export default function Appointment() {
     try {
       await api.createAppointment(form)
       setSuccess('Cita agendada correctamente')
+      addToast('Cita agendada correctamente', 'success')
       setForm({ advisor_name: '', date: '', time: '', notes: '' })
       fetchAppointments()
     } catch (err) {
       setError(err.message)
+      addToast(err.message, 'error')
     }
   }
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
+    if (!deleteTarget) return
     try {
-      await api.deleteAppointment(id)
+      await api.deleteAppointment(deleteTarget)
+      setDeleteTarget(null)
       fetchAppointments()
+      addToast('Cita cancelada', 'success')
     } catch (err) {
-      setError(err.message)
+      addToast(err.message, 'error')
     }
   }
 
@@ -168,8 +178,8 @@ export default function Appointment() {
                     <span>{apt.time}</span>
                   </div>
                   {apt.notes && <p className="apt-notes">{apt.notes}</p>}
-                  <button className="btn btn-outline btn-sm btn-danger" onClick={() => handleDelete(apt.id)}>
-                    Cancelar Cita
+                  <button className="btn btn-outline btn-sm btn-danger" onClick={() => setDeleteTarget(apt.id)}>
+                    <Icon name="trash" size={14} /> Cancelar Cita
                   </button>
                 </div>
               ))}
@@ -177,6 +187,16 @@ export default function Appointment() {
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Cancelar Cita"
+        message="¿Estás seguro de que deseas cancelar esta cita?"
+        confirmLabel="Sí, cancelar"
+        danger
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   )
 }

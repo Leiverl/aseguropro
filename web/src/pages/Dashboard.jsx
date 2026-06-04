@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
+import { Icon } from '../components/Icon'
 
 const fmtPrice = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 })
 const fmtDate = new Intl.DateTimeFormat('es-MX', { year: 'numeric', month: 'short', day: 'numeric' })
@@ -36,10 +37,12 @@ export default function Dashboard() {
         </div>
         <div className="dashboard-stats">
           <div className="stat-card">
+            <Icon name="briefcase" size={20} />
             <span className="stat-value">{policies.length}</span>
             <span className="stat-label">P&oacute;lizas Activas</span>
           </div>
           <div className="stat-card">
+            <Icon name="calendar" size={20} />
             <span className="stat-value">{appointments.filter(a => a.status === 'pending').length}</span>
             <span className="stat-label">Citas Pendientes</span>
           </div>
@@ -61,8 +64,8 @@ export default function Dashboard() {
             <div className="policies-list">
               {policies.map(p => (
                 <div key={p.id} className="policy-card">
-                  <div className="policy-icon" style={{ background: (p.color || '#1e40af') + '15', color: p.color || '#1e40af' }}>
-                    {p.plan_name?.[0] || 'S'}
+                  <div className="policy-icon" style={{ background: (p.color || 'var(--color-primary)') + '15', color: p.color || 'var(--color-primary)' }}>
+                    <Icon name="shield" size={20} />
                   </div>
                   <div className="policy-info">
                     <h3>{p.plan_name}</h3>
@@ -115,14 +118,17 @@ export default function Dashboard() {
 
       <section className="dashboard-actions">
         <Link to="/quote" className="action-card">
+          <Icon name="dollar" size={24} />
           <h3>Cotizar</h3>
           <p>Calcula tu prima personalizada</p>
         </Link>
         <Link to="/appointment" className="action-card">
+          <Icon name="calendar" size={24} />
           <h3>Agendar Cita</h3>
           <p>Habla con un asesor</p>
         </Link>
         <Link to="/plans" className="action-card">
+          <Icon name="search" size={24} />
           <h3>Ver Planes</h3>
           <p>Explora todas las coberturas</p>
         </Link>
