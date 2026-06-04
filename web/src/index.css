@@ -184,26 +184,13 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   height: 64px;
   display: flex;
   align-items: center;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
 }
 
 .navbar.scrolled {
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
-
-.navbar:not(.scrolled) {
-  color: #fff;
-}
-.navbar:not(.scrolled) .nav-logo { color: #fff; }
-.navbar:not(.scrolled) .nav-link { color: rgba(255,255,255,0.75); }
-.navbar:not(.scrolled) .nav-link:hover { color: #fff; background: rgba(255,255,255,0.08); }
-.navbar:not(.scrolled) .theme-toggle { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.2); }
-.navbar:not(.scrolled) .theme-toggle:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
-.navbar:not(.scrolled) .menu-toggle { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.2); }
-.navbar:not(.scrolled) .nav-logo-icon { background: rgba(255,255,255,0.15); color: #fff; }
-.navbar:not(.scrolled) .btn-outline { color: #fff; border-color: rgba(255,255,255,0.25); }
-.navbar:not(.scrolled) .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); }
 
 .nav-container {
   max-width: 1120px;
