@@ -88,18 +88,7 @@ aseguradora/
 | **Vercel** | `web/` | Push a `master` |
 | **Expo/EAS** | `mobile/` | Manual |
 
-### Variables de Entorno
 
-**Backend (Railway)**
-```env
-PORT=3001
-JWT_SECRET=velmacsafe-secret-key-2024
-```
-
-**Web (Vercel)**
-```env
-VITE_API_URL=https://avelmacsafe-production.up.railway.app/api
-```
 
 ## Comandos Útiles
 
